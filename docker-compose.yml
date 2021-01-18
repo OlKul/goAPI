@@ -1,0 +1,27 @@
+version: "2"
+services:
+  app:
+    build: ./
+    image: golang:1.6.1-alpine
+    command: /main
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_URL: host=postgres user=oleg password=oleg sslmode=disable
+    networks:
+      - backend
+  postgres:
+      image: postgres
+      restart: always
+      environment:
+        - POSTGRES_PASSWORD=oleg
+        - POSTGRES_USER=oleg
+        - POSTGRES_DB=oleg
+      ports:
+        - "5432:5432"
+      networks:
+        - backend
+networks:
+  backend:
